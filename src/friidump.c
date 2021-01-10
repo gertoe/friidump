@@ -761,5 +761,5 @@ int main (int argc, char *argv[]) {
 		my_free (options.raw_in);
 	}
 
-	return (out);
+	return (ret);
 }
