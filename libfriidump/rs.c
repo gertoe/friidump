@@ -8,7 +8,7 @@
 #define nn  182         /* nn=2**mm -1   length of codeword */
 #define kk  172         /* kk = nn-2*tt  */ /* Degree of g(x) = 2*tt */
 
-//#define	NN		n-1
+//#define	NN		n-1     /* GF_SIZE (== NN) = 2**GF_BITS - 1 */
 //#define	FCR		0
 //#define	PRIM	1
 #define	_NROOTS	nn-kk
@@ -41,10 +41,14 @@ int b0 = 1;
   noise corrupted received vector  */
 int recd[nn], data[kk], bb[nn-kk];
 
+/**
+ * modnn(x) computes x mod GF_SIZE using fast binary arithmetics, where
+ * GF_SIZE is NN (= 255 = 2**8 - 1)
+ * */
 int modnn(int x){
-  while (x >= 0xff) {
-    x -= 0xff;
-    x = (x >> 0xff) + (x & 0xff);
+  while (x >= NN) {
+    x -= NN;
+    x = (x >> 8) + (x & 0xff);
   }
   return x;
 }
