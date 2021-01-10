@@ -55,13 +55,13 @@ void multihash_update (multihash *mh, unsigned char *data, int bytes) {
 	mh -> crc32 = CrcUpdate (mh -> crc32, data, bytes);
 #endif
 #ifdef USE_MD4
-	//md4_update (&(mh -> md4), data, bytes);
+	md4_update (&(mh -> md4), data, bytes);
 #endif
 #ifdef USE_MD5
 	MD5Update (&(mh -> md5), data, bytes);
 #endif
 #ifdef USE_ED2K
-	//ed2khash_update (&(mh -> ed2k), data, bytes);
+	ed2khash_update (&(mh -> ed2k), data, bytes);
 #endif
 #ifdef USE_SHA1
 	Sha1Update (&(mh -> sha1), data, bytes);		/* WARNING: SHA1Update() destroys data! */

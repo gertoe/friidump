@@ -54,10 +54,10 @@
 extern "C" {
 #endif
 
-#define USE_CRC32
-#define USE_MD4
+//#define USE_CRC32
+//#define USE_MD4
 #define USE_MD5
-#define USE_ED2K
+//#define USE_ED2K
 #define USE_SHA1
 
 #ifdef USE_CRC32

@@ -389,6 +389,7 @@ void *dumper_destroy (dumper *dmp) {
 }
 
 
+#ifdef USE_CRC32
 char *dumper_get_iso_crc32 (dumper *dmp) {
 	return ((dmp -> hash_iso).crc32_s);
 }
@@ -397,8 +398,10 @@ char *dumper_get_iso_crc32 (dumper *dmp) {
 char *dumper_get_raw_crc32 (dumper *dmp) {
 	return ((dmp -> hash_raw).crc32_s);
 }
+#endif
 
 
+#ifdef USE_MD4
 char *dumper_get_iso_md4 (dumper *dmp) {
 	return ((dmp -> hash_iso).md4_s);
 }
@@ -407,8 +410,10 @@ char *dumper_get_iso_md4 (dumper *dmp) {
 char *dumper_get_raw_md4 (dumper *dmp) {
 	return ((dmp -> hash_raw).md4_s);
 }
+#endif
 
 
+#ifdef USE_MD5
 char *dumper_get_iso_md5 (dumper *dmp) {
 	return ((dmp -> hash_iso).md5_s);
 }
@@ -417,8 +422,10 @@ char *dumper_get_iso_md5 (dumper *dmp) {
 char *dumper_get_raw_md5 (dumper *dmp) {
 	return ((dmp -> hash_raw).md5_s);
 }
+#endif
 
 
+#ifdef USE_ED2K
 char *dumper_get_iso_ed2k (dumper *dmp) {
 	return ((dmp -> hash_iso).ed2k_s);
 }
@@ -427,8 +434,10 @@ char *dumper_get_iso_ed2k (dumper *dmp) {
 char *dumper_get_raw_ed2k (dumper *dmp) {
 	return ((dmp -> hash_raw).ed2k_s);
 }
+#endif
 
 
+#ifdef USE_SHA1
 char *dumper_get_iso_sha1 (dumper *dmp) {
 	return ((dmp -> hash_iso).sha1_s);
 }
@@ -437,3 +446,4 @@ char *dumper_get_iso_sha1 (dumper *dmp) {
 char *dumper_get_raw_sha1 (dumper *dmp) {
 	return ((dmp -> hash_raw).sha1_s);
 }
+#endif

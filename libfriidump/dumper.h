@@ -23,6 +23,7 @@
 #define DUMPER_H_INCLUDED
 
 #include "misc.h"
+#include "multihash.h"
 #include <sys/types.h>
 
 #ifdef __cplusplus
@@ -42,16 +43,26 @@ FRIIDUMPLIB_EXPORT void dumper_set_progress_callback (dumper *dmp, progress_func
 FRIIDUMPLIB_EXPORT void dumper_set_hashing (dumper *dmp, bool h);
 FRIIDUMPLIB_EXPORT void dumper_set_flushing (dumper *dmp, bool f);
 FRIIDUMPLIB_EXPORT void *dumper_destroy (dumper *dmp);
+#ifdef USE_CRC32
 FRIIDUMPLIB_EXPORT char *dumper_get_iso_crc32 (dumper *dmp);
 FRIIDUMPLIB_EXPORT char *dumper_get_raw_crc32 (dumper *dmp);
+#endif
+#ifdef USE_MD4
 FRIIDUMPLIB_EXPORT char *dumper_get_iso_md4 (dumper *dmp);
 FRIIDUMPLIB_EXPORT char *dumper_get_raw_md4 (dumper *dmp);
+#endif
+#ifdef USE_MD5
 FRIIDUMPLIB_EXPORT char *dumper_get_iso_md5 (dumper *dmp);
 FRIIDUMPLIB_EXPORT char *dumper_get_raw_md5 (dumper *dmp);
+#endif
+#ifdef USE_ED2K
 FRIIDUMPLIB_EXPORT char *dumper_get_iso_ed2k (dumper *dmp);
 FRIIDUMPLIB_EXPORT char *dumper_get_raw_ed2k (dumper *dmp);
+#endif
+#ifdef USE_SHA1
 FRIIDUMPLIB_EXPORT char *dumper_get_iso_sha1 (dumper *dmp);
 FRIIDUMPLIB_EXPORT char *dumper_get_raw_sha1 (dumper *dmp);
+#endif
 
 #ifdef __cplusplus
 }

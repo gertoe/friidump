@@ -27,6 +27,7 @@
 #include "disc.h"
 #include "dumper.h"
 #include "unscrambler.h"
+#include "multihash.h"
 
 #define USECS_PER_SEC	1000000
 
@@ -612,28 +613,80 @@ int dologic (disc *d, progstats stats) {
 
 							if (dumper_dump (dmp, &current_sector)) {
 								fprintf (stderr, "Dump completed successfully!\n");
+#if defined(USE_CRC32) || defined(USE_MD4) || defined(USE_MD5) || defined(USE_SHA1) || defined(USE_ED2K)
 								if (!options.no_hashing && options.raw_out)
 									fprintf (stderr,
 										"Raw image hashes:\n"
+#ifdef USE_CRC32
 										"CRC32...: %s\n"
-										//"MD4.....: %s\n"
+#endif
+#ifdef USE_MD4
+										"MD4.....: %s\n"
+#endif
+#ifdef USE_MD5
 										"MD5.....: %s\n"
+#endif
+#ifdef USE_SHA1
 										"SHA-1...: %s\n"
-										/*"ED2K....: %s\n"*/,
-										dumper_get_raw_crc32 (dmp), /*dumper_get_raw_md4 (dmp),*/ dumper_get_raw_md5 (dmp),
-										dumper_get_raw_sha1 (dmp)/*, dumper_get_raw_ed2k (dmp)*/
+#endif
+#ifdef USE_ED2K
+										"ED2K....: %s\n"
+#endif
+                    "%s",
+#ifdef USE_CRC32
+										dumper_get_raw_crc32 (dmp),
+#endif
+#ifdef USE_MD4
+										dumper_get_raw_md4 (dmp),
+#endif
+#ifdef USE_MD5
+										dumper_get_raw_md5 (dmp),
+#endif
+#ifdef USE_SHA1
+										dumper_get_raw_sha1 (dmp),
+#endif
+#ifdef USE_ED2K
+										dumper_get_raw_ed2k (dmp),
+#endif
+                    "\n"
 									);
 								if (!options.no_hashing && options.iso_out)
 									fprintf (stderr,
 										"ISO image hashes:\n"
+#ifdef USE_CRC32
 										"CRC32...: %s\n"
-										//"MD4.....: %s\n"
+#endif
+#ifdef USE_MD4
+										"MD4.....: %s\n"
+#endif
+#ifdef USE_MD5
 										"MD5.....: %s\n"
+#endif
+#ifdef USE_SHA1
 										"SHA-1...: %s\n"
-										/*"ED2K....: %s\n"*/,
-										dumper_get_iso_crc32 (dmp), /*dumper_get_iso_md4 (dmp),*/ dumper_get_iso_md5 (dmp),
-										dumper_get_iso_sha1 (dmp)/*, dumper_get_iso_ed2k (dmp)*/
+#endif
+#ifdef USE_ED2K
+										"ED2K....: %s\n"
+#endif
+                    "%s",
+#ifdef USE_CRC32
+										dumper_get_iso_crc32 (dmp),
+#endif
+#ifdef USE_MD4
+										dumper_get_iso_md4 (dmp),
+#endif
+#ifdef USE_MD5
+										dumper_get_iso_md5 (dmp),
+#endif
+#ifdef USE_SHA1
+										dumper_get_iso_sha1 (dmp),
+#endif
+#ifdef USE_ED2K
+										dumper_get_iso_ed2k (dmp),
+#endif
+                    "\n"
 									);
+#endif
 
 								out = true;
 								disc_stop_unit (d, 0);
