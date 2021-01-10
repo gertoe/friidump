@@ -63,6 +63,10 @@ FRIIDUMPLIB_EXPORT char *dumper_get_raw_ed2k (dumper *dmp);
 FRIIDUMPLIB_EXPORT char *dumper_get_iso_sha1 (dumper *dmp);
 FRIIDUMPLIB_EXPORT char *dumper_get_raw_sha1 (dumper *dmp);
 #endif
+#ifdef USE_SHA2
+FRIIDUMPLIB_EXPORT char *dumper_get_iso_sha2 (dumper *dmp);
+FRIIDUMPLIB_EXPORT char *dumper_get_raw_sha2 (dumper *dmp);
+#endif
 
 #ifdef __cplusplus
 }

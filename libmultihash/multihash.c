@@ -45,6 +45,10 @@ void multihash_init (multihash *mh) {
 	(mh -> sha1_s)[0] = '\0';
 	Sha1Initialise (&(mh -> sha1));
 #endif
+#ifdef USE_SHA2
+	(mh -> sha2_s)[0] = '\0';
+	Sha256Initialise (&(mh -> sha2));
+#endif
 
 	return;
 }
@@ -65,6 +69,9 @@ void multihash_update (multihash *mh, unsigned char *data, int bytes) {
 #endif
 #ifdef USE_SHA1
 	Sha1Update (&(mh -> sha1), data, bytes);		/* WARNING: SHA1Update() destroys data! */
+#endif
+#ifdef USE_SHA2
+	Sha256Update (&(mh -> sha2), data, bytes);
 #endif
 
 	return;
@@ -105,7 +112,15 @@ void multihash_finish (multihash *mh) {
 	for (bytes = 0; bytes < LEN_SHA1 / 2; bytes++)
 		sprintf (mh -> sha1_s + 2*bytes, "%02x", sha1_hash.bytes[bytes]);
 	(mh -> sha1_s)[LEN_SHA1] = '\0';
-
+#endif
+#ifdef USE_SHA2
+  /* SHA256_HASH struct that receives the finalised sha2-256 hash */
+  SHA256_HASH sha2_hash;
+	Sha256Finalise (&(mh -> sha2), &sha2_hash);
+  /* copy the final sha2 hash as hex string to the multihash struct */
+	for (bytes = 0; bytes < LEN_SHA2 / 2; bytes++)
+		sprintf (mh -> sha2_s + 2*bytes, "%02x", sha2_hash.bytes[bytes]);
+	(mh -> sha2_s)[LEN_SHA2] = '\0';
 #endif
 
 	return;

@@ -626,11 +626,14 @@ int dologic (disc *d, progstats stats) {
 #ifdef USE_MD5
 										"MD5.....: %s\n"
 #endif
+#ifdef USE_ED2K
+										"ED2K....: %s\n"
+#endif
 #ifdef USE_SHA1
 										"SHA-1...: %s\n"
 #endif
-#ifdef USE_ED2K
-										"ED2K....: %s\n"
+#ifdef USE_SHA2
+										"SHA-2...: %s\n"
 #endif
                     "%s",
 #ifdef USE_CRC32
@@ -642,11 +645,14 @@ int dologic (disc *d, progstats stats) {
 #ifdef USE_MD5
 										dumper_get_raw_md5 (dmp),
 #endif
+#ifdef USE_ED2K
+										dumper_get_raw_ed2k (dmp),
+#endif
 #ifdef USE_SHA1
 										dumper_get_raw_sha1 (dmp),
 #endif
-#ifdef USE_ED2K
-										dumper_get_raw_ed2k (dmp),
+#ifdef USE_SHA2
+										dumper_get_raw_sha2 (dmp),
 #endif
                     "\n"
 									);
@@ -662,11 +668,14 @@ int dologic (disc *d, progstats stats) {
 #ifdef USE_MD5
 										"MD5.....: %s\n"
 #endif
+#ifdef USE_ED2K
+										"ED2K....: %s\n"
+#endif
 #ifdef USE_SHA1
 										"SHA-1...: %s\n"
 #endif
-#ifdef USE_ED2K
-										"ED2K....: %s\n"
+#ifdef USE_SHA2
+										"SHA-2...: %s\n"
 #endif
                     "%s",
 #ifdef USE_CRC32
@@ -678,11 +687,14 @@ int dologic (disc *d, progstats stats) {
 #ifdef USE_MD5
 										dumper_get_iso_md5 (dmp),
 #endif
+#ifdef USE_ED2K
+										dumper_get_iso_ed2k (dmp),
+#endif
 #ifdef USE_SHA1
 										dumper_get_iso_sha1 (dmp),
 #endif
-#ifdef USE_ED2K
-										dumper_get_iso_ed2k (dmp),
+#ifdef USE_SHA2
+										dumper_get_iso_sha2 (dmp),
 #endif
                     "\n"
 									);

@@ -12,12 +12,14 @@ add_library (
 	md5.c
 	multihash.c
 	sha1.c
+	sha2.c
 	crc32.h
 	edonkey.h
 	md4.h
 	md5.h
 	multihash.h
 	sha1.h
+	sha2.h
 )
 
 set_target_properties (multihashlib PROPERTIES OUTPUT_NAME "multihash")

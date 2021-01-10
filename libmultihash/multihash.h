@@ -59,6 +59,7 @@ extern "C" {
 #define USE_MD5
 //#define USE_ED2K
 #define USE_SHA1
+#define USE_SHA2
 
 #ifdef USE_CRC32
 #include <sys/types.h>
@@ -87,6 +88,11 @@ extern "C" {
 #define LEN_SHA1 40
 #endif
 
+#ifdef USE_SHA2
+#include "sha2.h"
+#define LEN_SHA2 64
+#endif
+
 /* This must be as long as the longest hash (in bytes) */
 #define MAX_DIGESTSIZE 20
 
@@ -110,6 +116,10 @@ typedef struct {
 #ifdef USE_SHA1
 	Sha1Context sha1;
 	char sha1_s[LEN_SHA1 + 1];
+#endif
+#ifdef USE_SHA2
+	Sha256Context sha2;
+	char sha2_s[LEN_SHA2 + 1];
 #endif
 } multihash;
 

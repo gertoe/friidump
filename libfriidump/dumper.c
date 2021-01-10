@@ -447,3 +447,14 @@ char *dumper_get_raw_sha1 (dumper *dmp) {
 	return ((dmp -> hash_raw).sha1_s);
 }
 #endif
+
+#ifdef USE_SHA2
+char *dumper_get_iso_sha2 (dumper *dmp) {
+	return ((dmp -> hash_iso).sha2_s);
+}
+
+
+char *dumper_get_raw_sha2 (dumper *dmp) {
+	return ((dmp -> hash_raw).sha2_s);
+}
+#endif
