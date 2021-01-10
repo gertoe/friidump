@@ -1,39 +1,99 @@
-/* 
-** sha1.h
-**
-** Copyright NTT MCL, 2000.
-**
-** Satomi Okazaki
-** Security Group, NTT MCL
-** November 1999
-**
-**************************
-** 13 December 1999.  In SHA1Transform, changed "buffer" to be const.
-** In SHA1Update, changed "data to be const.  -- S.O.
-*/
 #ifndef __SHA1_H__
 #define __SHA1_H__
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  WjCryptLib_Sha1
+//
+//  Implementation of SHA1 hash function.
+//  Original author:  Steve Reid <sreid@sea-to-sky.net>
+//  Contributions by: James H. Brown <jbrown@burgoyne.com>, Saul Kravitz <Saul.Kravitz@celera.com>,
+//  and Ralph Giles <giles@ghostscript.com>
+//  Modified by WaterJuice retaining Public Domain license.
+//
+//  This is free and unencumbered software released into the public domain - June 2013 waterjuice.org
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#pragma once
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  IMPORTS
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+#include <stdint.h>
 #include <stdio.h>
-#include <string.h>
 
-#ifndef SHA1_DIGESTSIZE
-#define SHA1_DIGESTSIZE  20
-#endif
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  TYPES
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef SHA1_BLOCKSIZE
-#define SHA1_BLOCKSIZE   64
-#endif
+// Sha1Context - This must be initialised using Sha1Initialised. Do not modify the contents of this structure directly.
+typedef struct
+{
+    uint32_t        State[5];
+    uint32_t        Count[2];
+    uint8_t         Buffer[64];
+} Sha1Context;
 
-typedef struct {
-    unsigned long state[5];
-    unsigned long count[2];	/* stores the number of bits */
-    unsigned char buffer[SHA1_BLOCKSIZE];
-} SHA1_CTX; 
+#define SHA1_HASH_SIZE           ( 160 / 8 )
 
-void SHA1Transform(unsigned long state[5], const unsigned char buffer[SHA1_BLOCKSIZE]);
-void SHA1Init(SHA1_CTX *context);
-void SHA1Update(SHA1_CTX *context, const unsigned char *data, unsigned long len);
-void SHA1Final(unsigned char digest[SHA1_DIGESTSIZE], SHA1_CTX *context);
+typedef struct
+{
+    uint8_t      bytes [SHA1_HASH_SIZE];
+} SHA1_HASH;
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  PUBLIC FUNCTIONS
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  Sha1Initialise
+//
+//  Initialises an SHA1 Context. Use this to initialise/reset a context.
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void
+    Sha1Initialise
+    (
+        Sha1Context*        Context         // [out]
+    );
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  Sha1Update
+//
+//  Adds data to the SHA1 context. This will process the data and update the internal state of the context. Keep on
+//  calling this function until all the data has been added. Then call Sha1Finalise to calculate the hash.
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void
+    Sha1Update
+    (
+        Sha1Context*        Context,        // [in out]
+        void const*         Buffer,         // [in]
+        uint32_t            BufferSize      // [in]
+    );
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  Sha1Finalise
+//
+//  Performs the final calculation of the hash and returns the digest (20 byte buffer containing 160bit hash). After
+//  calling this, Sha1Initialised must be used to reuse the context.
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void
+    Sha1Finalise
+    (
+        Sha1Context*        Context,        // [in out]
+        SHA1_HASH*          Digest          // [in]
+    );
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  Sha1Calculate
+//
+//  Combines Sha1Initialise, Sha1Update, and Sha1Finalise into one function. Calculates the SHA1 hash of the buffer.
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void
+    Sha1Calculate
+    (
+        void  const*        Buffer,         // [in]
+        uint32_t            BufferSize,     // [in]
+        SHA1_HASH*          Digest          // [in]
+    );
 
 #endif /* __SHA1_H__ */

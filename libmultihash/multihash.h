@@ -108,7 +108,7 @@ typedef struct {
 	char ed2k_s[LEN_ED2K + 1];
 #endif
 #ifdef USE_SHA1
-	SHA1_CTX sha1;
+	Sha1Context sha1;
 	char sha1_s[LEN_SHA1 + 1];
 #endif
 } multihash;

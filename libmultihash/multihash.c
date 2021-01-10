@@ -43,7 +43,7 @@ void multihash_init (multihash *mh) {
 #endif
 #ifdef USE_SHA1
 	(mh -> sha1_s)[0] = '\0';
-	SHA1Init (&(mh -> sha1));
+	Sha1Initialise (&(mh -> sha1));
 #endif
 
 	return;
@@ -64,7 +64,7 @@ void multihash_update (multihash *mh, unsigned char *data, int bytes) {
 //	ed2khash_update (&(mh -> ed2k), data, bytes);
 #endif
 #ifdef USE_SHA1
-	SHA1Update (&(mh -> sha1), data, bytes);		/* WARNING: SHA1Update() destroys data! */
+	Sha1Update (&(mh -> sha1), data, bytes);		/* WARNING: SHA1Update() destroys data! */
 #endif
 
 	return;
@@ -98,7 +98,7 @@ void multihash_finish (multihash *mh) {
 	(mh -> ed2k_s)[LEN_ED2K] = '\0';
 #endif	
 #ifdef USE_SHA1
-	SHA1Final (buf, &(mh -> sha1));
+	Sha1Finalise (buf, &(mh -> sha1));
 	for (bytes = 0; bytes < LEN_SHA1 / 2; bytes++)
 		sprintf (mh -> sha1_s, "%s%02x", mh -> sha1_s, buf[bytes]);
 	(mh -> sha1_s)[LEN_SHA1] = '\0';
