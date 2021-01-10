@@ -31,7 +31,9 @@
 /*** Windows stuff ***/
 #include "win32compat.h"
 
+#ifndef _GNU_SOURCE
 #define _GNU_SOURCE		// For strndup()
+#endif
 
 #include <stdio.h>
 #include <string.h>
@@ -123,8 +125,16 @@ my_off_t my_ftell (FILE* fp);
 
 
 /*** STUFF FOR DROPPING PRIVILEGES ***/
+#ifndef WIN32
+
+#include <unistd.h>
+
 FRIIDUMPLIB_EXPORT void drop_euid ();
 FRIIDUMPLIB_EXPORT void upgrade_euid ();
+
+/* store real and effective uid */
+static uid_t ruid, euid;
+#endif
 /******/
 
 

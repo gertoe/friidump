@@ -54,7 +54,6 @@
 #include <getopt.h>
 #endif
 
-
 /* Struct for program options */
 struct {
 	char *device;
@@ -663,8 +662,14 @@ int main (int argc, char *argv[]) {
 	unscrambler_progress_func pfunc;
 	u_int32_t current_sector;
 
-	/* First of all... */
+#ifndef WIN32
+  /* store real and effective uids */
+	ruid = getuid ();
+	euid = geteuid ();
+
+	/* First of all, drop privileges to real uid... */
 	drop_euid ();
+#endif
 	
 	welcome ();
 

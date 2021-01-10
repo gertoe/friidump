@@ -26,7 +26,7 @@
 #include <string.h>
 #include <ctype.h>
 #include <sys/types.h>
-//#include <sys/time.h>
+#include <sys/time.h>
 #include <time.h>
 
 /*** LOGGING STUFF ***/
@@ -260,55 +260,50 @@ my_off_t my_ftell (FILE* fp) {
 
 
 
-/*** STUFF FOR DROPPING PRIVILEGES ***/
+/*** STUFF FOR DROPPING PRIVILEGES ON POSIX OS ***/
 
 /* WARNING: I'm not sure at all that the privileges-dropping system I have implemented is secure, so don't rely too much on it. */
 
 #ifndef WIN32
-#include <unistd.h>
-#endif
-
 /**
- * Drops privileges to those of the real user (i. e. set euid to ruid).
+ * Drops privileges to those of the real user (i. e. set euid to ruid)
+ * if using setuid privilege escalation as a non-root user.
  */
 void drop_euid () {
-#ifndef WIN32
-	uid_t uid, euid;
+	int status;
 
-	uid = getuid ();
-	euid = geteuid ();
-	if (uid != 0 && uid != euid) {
-#if 1
-		seteuid (uid);
-#else
-		if (seteuid (uid) != 0)
-			debug ("seteuid() to uid %d failed", uid);
-		else
-			debug ("Changed euid from %d to %d", euid, uid);
-#endif
+	if (ruid != 0 && ruid != euid) {
+    status = setreuid (euid, ruid);
+
+		if (status < 0) {
+			debug ("seteuid() to uid %d failed", ruid);
+    }
+		else {
+			debug ("Changed euid from %d to %d", euid, ruid);
+    }
 	}
-#endif
 
 	return;
 }
 
 
 /**
- * Upgrades priviles to those of root (i. e. set euid to 0).
+ * Upgrades priviles to those of root (i. e. set euid to 0)
+ * if using setuid privilege escalation as a non-root user.
  */
 void upgrade_euid () {
-#ifndef WIN32
-	if (getuid () != 0) {
-#if 1
-		seteuid (0);
-#else
-		if (seteuid (0) != 0)
+	int status;
+
+	if (ruid != 0) {
+    status = setreuid (ruid, euid);
+		if (status < 0) {
 			debug ("seteuid() to root failed");
-		else
-			debug ("Changed euid to root");
-#endif
+    }
+		else {
+			debug ("Changed uid to root");
+    }
 	}
-#endif
 
        return;
 }
+#endif

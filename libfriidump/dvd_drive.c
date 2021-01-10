@@ -354,9 +354,11 @@ dvd_drive *dvd_drive_new (char *device, u_int32_t command) {
 	int fd;
 #endif
 
+#ifndef WIN32
 	/* Force the dropping of privileges: in our model, privileges are only used to execute memory dump commands, the user
 	   must gain access to the device somehow else (i. e. get added to the "cdrom" group or similar things) */
 	drop_euid ();
+#endif
 	
 	debug ("Trying to open DVD device %s", device);
 #ifdef WIN32
