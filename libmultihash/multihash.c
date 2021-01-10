@@ -35,7 +35,7 @@ void multihash_init (multihash *mh) {
 #endif
 #ifdef USE_MD5
 	(mh -> md5_s)[0] = '\0';
-	MD5Init (&(mh -> md5));
+	Md5Initialise (&(mh -> md5));
 #endif
 #ifdef USE_ED2K
 	(mh -> ed2k_s)[0] = '\0';
@@ -62,7 +62,7 @@ void multihash_update (multihash *mh, unsigned char *data, int bytes) {
 	md4_update (&(mh -> md4), data, bytes);
 #endif
 #ifdef USE_MD5
-	MD5Update (&(mh -> md5), data, bytes);
+	Md5Update (&(mh -> md5), data, bytes);
 #endif
 #ifdef USE_ED2K
 	ed2khash_update (&(mh -> ed2k), data, bytes);
@@ -93,9 +93,12 @@ void multihash_finish (multihash *mh) {
 	(mh -> md4_s)[LEN_MD4] = '\0';
 #endif
 #ifdef USE_MD5
-	MD5Final (&(mh -> md5));
+  /* MD5_HASH struct that receives the finalised MD5 hash */
+  MD5_HASH md5_hash;
+	Md5Finalise (&(mh -> md5), &md5_hash);
+  /* copy the final MD5 hash as hex string to the multihash struct */
 	for (bytes = 0; bytes < LEN_MD5 / 2; bytes++)
-		sprintf (mh -> md5_s + 2*bytes, "%02x", (mh -> md5).digest[bytes]);
+		sprintf (mh -> md5_s + 2*bytes, "%02x", md5_hash.bytes[bytes]);
 	(mh -> md5_s)[LEN_MD5] = '\0';
 #endif
 #ifdef USE_ED2K

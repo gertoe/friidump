@@ -106,7 +106,7 @@ typedef struct {
 	char md4_s[LEN_MD4 + 1];
 #endif
 #ifdef USE_MD5
-	MD5_CTX md5;
+	Md5Context md5;
 	char md5_s[LEN_MD5 + 1];
 #endif
 #ifdef USE_ED2K
