@@ -98,9 +98,10 @@ void multihash_finish (multihash *mh) {
 	(mh -> ed2k_s)[LEN_ED2K] = '\0';
 #endif
 #ifdef USE_SHA1
+  /* SHA1_HASH struct that receives the finalised sha1 hash */
   SHA1_HASH sha1_hash;
-
 	Sha1Finalise (&(mh -> sha1), &sha1_hash);
+  /* copy the final sha1 hash as hex string to the multihash struct */
 	for (bytes = 0; bytes < LEN_SHA1 / 2; bytes++)
 		sprintf (mh -> sha1_s + 2*bytes, "%02x", sha1_hash.bytes[bytes]);
 	(mh -> sha1_s)[LEN_SHA1] = '\0';
