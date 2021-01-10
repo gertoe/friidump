@@ -55,13 +55,13 @@ void multihash_update (multihash *mh, unsigned char *data, int bytes) {
 	mh -> crc32 = CrcUpdate (mh -> crc32, data, bytes);
 #endif
 #ifdef USE_MD4
-//	md4_update (&(mh -> md4), data, bytes);
+	//md4_update (&(mh -> md4), data, bytes);
 #endif
 #ifdef USE_MD5
 	MD5Update (&(mh -> md5), data, bytes);
 #endif
 #ifdef USE_ED2K
-//	ed2khash_update (&(mh -> ed2k), data, bytes);
+	//ed2khash_update (&(mh -> ed2k), data, bytes);
 #endif
 #ifdef USE_SHA1
 	Sha1Update (&(mh -> sha1), data, bytes);		/* WARNING: SHA1Update() destroys data! */
@@ -74,7 +74,7 @@ void multihash_update (multihash *mh, unsigned char *data, int bytes) {
 void multihash_finish (multihash *mh) {
 	unsigned char buf[MAX_DIGESTSIZE];
 	int bytes;
-	
+
 #ifdef USE_CRC32
 	mh -> crc32 ^= 0xffffffff;
 	snprintf (mh -> crc32_s, LEN_CRC32 + 1, "%08x", mh -> crc32);
@@ -82,25 +82,27 @@ void multihash_finish (multihash *mh) {
 #ifdef USE_MD4
 	md4_finish (&(mh -> md4), buf);
 	for (bytes = 0; bytes < LEN_MD4 / 2; bytes++)
-		sprintf (mh -> md4_s, "%s%02x", mh -> md4_s, buf[bytes]);
+		sprintf (mh -> md4_s + 2*bytes, "%02x", buf[bytes]);
 	(mh -> md4_s)[LEN_MD4] = '\0';
 #endif
 #ifdef USE_MD5
 	MD5Final (&(mh -> md5));
 	for (bytes = 0; bytes < LEN_MD5 / 2; bytes++)
-		sprintf (mh -> md5_s, "%s%02x", mh -> md5_s, (mh -> md5).digest[bytes]);
+		sprintf (mh -> md5_s + 2*bytes, "%02x", (mh -> md5).digest[bytes]);
 	(mh -> md5_s)[LEN_MD5] = '\0';
 #endif
 #ifdef USE_ED2K
 	ed2khash_finish (&(mh -> ed2k), buf);
 	for (bytes = 0; bytes < LEN_ED2K / 2; bytes++)
-		sprintf (mh -> ed2k_s, "%s%02x", mh -> ed2k_s, buf[bytes]);
+		sprintf (mh -> ed2k_s + 2*bytes, "%02x", buf[bytes]);
 	(mh -> ed2k_s)[LEN_ED2K] = '\0';
-#endif	
+#endif
 #ifdef USE_SHA1
-	Sha1Finalise (buf, &(mh -> sha1));
+  SHA1_HASH sha1_hash;
+
+	Sha1Finalise (&(mh -> sha1), &sha1_hash);
 	for (bytes = 0; bytes < LEN_SHA1 / 2; bytes++)
-		sprintf (mh -> sha1_s, "%s%02x", mh -> sha1_s, buf[bytes]);
+		sprintf (mh -> sha1_s + 2*bytes, "%02x", sha1_hash.bytes[bytes]);
 	(mh -> sha1_s)[LEN_SHA1] = '\0';
 
 #endif
@@ -113,7 +115,7 @@ int multihash_file (multihash *mh, char *filename) {
 	FILE *fp;
 	int bytes, out;
 	unsigned char data[READBUF_SIZE];
-	
+
 	multihash_init (mh);
 	if ((fp = fopen (filename, "r"))) {
 		while ((bytes = fread (data, 1, READBUF_SIZE, fp)) != 0)
