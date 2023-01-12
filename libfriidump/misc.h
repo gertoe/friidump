@@ -133,7 +133,7 @@ FRIIDUMPLIB_EXPORT void drop_euid ();
 FRIIDUMPLIB_EXPORT void upgrade_euid ();
 
 /* store real and effective uid */
-static uid_t ruid, euid;
+extern uid_t ruid, euid;
 #endif
 /******/
 

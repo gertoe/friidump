@@ -41,6 +41,7 @@
 
 // #define unscramblerdebug(...) debug (__VA_ARGS__);
 #define unscramblerdebug(...)
+u_int8_t disctype;
 
 /*! \brief Size of the seeds cache (Do not touch) */
 #define MAX_SEEDS 4

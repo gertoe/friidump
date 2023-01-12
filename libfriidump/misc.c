@@ -29,6 +29,7 @@
 #include <sys/time.h>
 #include <time.h>
 
+uid_t ruid, euid;
 /*** LOGGING STUFF ***/
 /* Uses code from the printf man page */
 static int my_vasprintf (char **dst, const char *fmt, va_list ap) {
